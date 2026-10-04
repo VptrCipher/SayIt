@@ -3,7 +3,7 @@ name = "sayit"
 version = "0.1.1"
 description = "Local-first push-to-talk voice typing for your desktop"
 readme = "README.md"
-requires-python = ">=3.12,<3.14"
+requires-python = ">=3.12"
 dependencies = [
     # Core dependencies - bundled with installer
     "platformdirs>=4.5.1",
@@ -80,7 +80,7 @@ requires = [
     "PySide6-Essentials>=6.6.0",
     "sounddevice>=0.5.3",
     "numpy>=1.26.0",
-    # Keep the native ASR core validated with sherpa-onnx 1.12.21.
+    # Keep the native ASR runtime pair pinned and validated together.
     "sherpa-onnx==1.13.8",
     "sherpa-onnx-core==1.13.8",
     "litellm>=1.80.16",
