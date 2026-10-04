@@ -362,7 +362,12 @@ class TranscribeApp(QObject):
             self._download_dialog = None
 
     def _on_download_cancelled(self) -> None:
-        self._transcriber.unload()
+        # Cancel the downloader owned by the background model-loading thread.
+        # Do not unload the active transcription engine here: during startup
+        # it may still be the previous engine, not the engine performing the
+        # download.
+        if self._model_loader_thread is not None:
+            self._model_loader_thread.cancel()
         self._hide_download_dialog(success=False)
 
     def _start_recording(self) -> None:
