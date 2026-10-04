@@ -160,10 +160,11 @@ wheels = [
 
 [[package]]
 name = "briefcase"
-version = "0.3.26"
+version = "0.4.5"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "build" },
+    { name = "chardet" },
     { name = "cookiecutter" },
     { name = "dmgbuild", marker = "sys_platform == 'darwin'" },
     { name = "gitpython" },
@@ -174,14 +175,14 @@ dependencies = [
     { name = "psutil" },
     { name = "python-dateutil" },
     { name = "rich" },
-    { name = "setuptools" },
+    { name = "tenacity" },
     { name = "tomli-w" },
     { name = "truststore" },
     { name = "wheel" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/7a/c6/668fd69fcc982f8673d1324da034e3ef0c5f2eaa14feab25693dddccd563/briefcase-0.3.26.tar.gz", hash = "sha256:ebde1b0e899c5d1107737694f8d6070b60706c4260ce787915b72f29d6c8413d", size = 2608149, upload-time = "2025-12-04T08:06:27.348Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/b9/3d/58c3e032dc71d1b82cedf49cd8fe7ae3173aef630a4c078961d4a117fc1c/briefcase-0.4.5.tar.gz", hash = "sha256:b3c9e2f781ad6ca9e241a73ca80660624fed86db5b3e65a80b7a5bb697d54741", size = 2727138, upload-time = "2026-09-08T08:38:29.88Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/03/d0/9d1199811cc088f4fb1e9faa8504e620e45e4502ac4ef5357cad369ff87f/briefcase-0.3.26-py3-none-any.whl", hash = "sha256:8c1e8b3c9006f730c9e4983d640cb0b52333c17f605d952b503cb6beae5fec38", size = 265200, upload-time = "2025-12-04T08:06:24.491Z" },
+    { url = "https://files.pythonhosted.org/packages/a3/eb/18b21088b380242820ec065e3ed32c65cf98ffeb2797012d7f2e37b60029/briefcase-0.4.5-py3-none-any.whl", hash = "sha256:0fd06503b03bfbb52fb13137d49791e0c686bb3c39c9bd901e35ebf3de37aa2a", size = 303995, upload-time = "2026-09-08T08:38:27.362Z" },
 ]
 
 [[package]]
@@ -1640,7 +1641,7 @@ requires-dist = [
 [package.metadata.requires-dev]
 dev = [
     { name = "black", specifier = ">=25.12.0" },
-    { name = "briefcase", specifier = ">=0.3.26" },
+    { name = "briefcase", specifier = "==0.4.5" },
     { name = "isort", specifier = ">=7.0.0" },
     { name = "pre-commit", specifier = ">=4.5.1" },
     { name = "pyside6", specifier = ">=6.10.1" },
@@ -1832,6 +1833,15 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/fd/18/a545c4ea42af3df6effd7d13d250ba77a0a86fb20393143bbb9a92e434d4/tokenizers-0.22.2-cp39-abi3-win32.whl", hash = "sha256:a6bf3f88c554a2b653af81f3204491c818ae2ac6fbc09e76ef4773351292bc92", size = 2502363, upload-time = "2026-01-05T10:45:20.593Z" },
     { url = "https://files.pythonhosted.org/packages/65/71/0670843133a43d43070abeb1949abfdef12a86d490bea9cd9e18e37c5ff7/tokenizers-0.22.2-cp39-abi3-win_amd64.whl", hash = "sha256:c9ea31edff2968b44a88f97d784c2f16dc0729b8b143ed004699ebca91f05c48", size = 2747786, upload-time = "2026-01-05T10:45:18.411Z" },
     { url = "https://files.pythonhosted.org/packages/72/f4/0de46cfa12cdcbcd464cc59fde36912af405696f687e53a091fb432f694c/tokenizers-0.22.2-cp39-abi3-win_arm64.whl", hash = "sha256:9ce725d22864a1e965217204946f830c37876eee3b2ba6fc6255e8e903d5fcbc", size = 2612133, upload-time = "2026-01-05T10:45:17.232Z" },
+]
+
+[[package]]
+name = "tenacity"
+version = "9.1.4"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/47/c6/ee486fd809e357697ee8a44d3d69222b344920433d3b6666ccd9b374630c/tenacity-9.1.4.tar.gz", hash = "sha256:adb31d4c263f2bd041081ab33b498309a57c77f9acf2db65aadf0898179cf93a", size = 49413, upload-time = "2026-02-07T10:45:33.841Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/d7/c1/eb8f9debc45d3b7918a32ab756658a0904732f75e555402972246b0b8e71/tenacity-9.1.4-py3-none-any.whl", hash = "sha256:6095a360c919085f28c6527de529e76a06ad89b23659fa881ae0649b867a9d55", size = 28926, upload-time = "2026-02-07T10:45:32.24Z" },
 ]
 
 [[package]]
