@@ -141,6 +141,11 @@ class TranscriptionEngine:
         )
         return True
 
+    def cancel_model_download(self) -> None:
+        """Request cooperative cancellation of a first-use model download."""
+        if self._model_downloader is not None:
+            self._model_downloader.cancel()
+
     def transcribe(
         self, audio_data: np.ndarray, sample_rate: int = 16000
     ) -> Optional[str]:
