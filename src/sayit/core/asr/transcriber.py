@@ -9,6 +9,8 @@ import numpy as np
 from ...utils.logger import get_logger
 from ..audio.audio_processor import AudioProcessor, needs_chunking
 from .backends import SherpaOnnxBackend, TranscriptionResult
+from .models.downloader import ModelDownloader
+from .models.registry import get_model_by_id, is_model_downloaded
 
 
 class EngineState(Enum):
@@ -38,6 +40,7 @@ class TranscriptionEngine:
         # transducer (Parakeet) path ignores it entirely.
         self._whisper_num_threads = whisper_num_threads
         self._backend: Optional[SherpaOnnxBackend] = None
+        self._model_downloader: Optional[ModelDownloader] = None
         self._state = EngineState.NOT_LOADED
         self._device = "cpu"  # Will be updated by backend load
         self._audio_processor = AudioProcessor()
