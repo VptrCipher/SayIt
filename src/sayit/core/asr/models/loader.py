@@ -45,6 +45,11 @@ class ModelLoaderThread(QThread):
     def _on_progress(self, value: float):
         self.progress.emit(value)
 
+    def cancel(self) -> None:
+        """Request cooperative cancellation of the current model download."""
+        if self._engine is not None:
+            self._engine.cancel_model_download()
+
     @property
     def engine(self) -> TranscriptionEngine:
         return self._engine
