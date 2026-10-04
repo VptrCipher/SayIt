@@ -40,7 +40,7 @@ where = ["src"]
 [dependency-groups]
 dev = [
     "black>=25.12.0",
-    "briefcase>=0.3.26",
+    "briefcase==0.4.5",
     "isort>=7.0.0",
     "pre-commit>=4.5.1",
     "pyside6>=6.10.1",
@@ -70,7 +70,7 @@ license.file = "LICENSE"
 [tool.briefcase.app.sayit]
 formal_name = "SayIt"
 icon = "icons/sayit"
-description = "SayIt — local push-to-talk voice typing for Windows"
+description = "SayIt — local push-to-talk voice typing for your desktop"
 long_description = "SayIt is a lightweight push-to-talk voice-typing utility. Hold a hotkey, speak, release, and the locally-transcribed text is inserted at your cursor. Speech recognition runs on-device via Sherpa-ONNX."
 sources = ["src/sayit"]
 requires = [
@@ -80,7 +80,7 @@ requires = [
     "PySide6-Essentials>=6.6.0",
     "sounddevice>=0.5.3",
     "numpy>=1.26.0",
-    # Keep the native ASR core validated with sherpa-onnx 1.12.21.
+    # Keep the native ASR core pins validated together.
     "sherpa-onnx==1.13.8",
     "sherpa-onnx-core==1.13.8",
     "litellm>=1.80.16",
