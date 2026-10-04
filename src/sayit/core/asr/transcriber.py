@@ -88,6 +88,42 @@ class TranscriptionEngine:
         if self._backend is not None and self._backend.is_loaded:
             return True
 
+        # Registry model IDs are downloaded automatically on first use. This
+        # avoids shipping large model weights inside the app installer.
+        if not os.path.isabs(self.model_name):
+            model_info = get_model_by_id(self.model_name)
+            if model_info is not None and not is_model_downloaded(self.model_name):
+                self._set_state(
+                    EngineState.DOWNLOADING,
+                    f"Downloading {model_info.name}...",
+                )
+                downloader = ModelDownloader()
+                self._model_downloader = downloader
+
+                def on_download_progress(downloaded: int, total: int) -> None:
+                    progress = (downloaded / total) if total else 0.0
+                    if self.on_download_progress:
+                        self.on_download_progress(progress)
+
+                def on_download_status(status: str) -> None:
+                    self._set_state(EngineState.DOWNLOADING, status)
+
+                try:
+                    downloaded = downloader.download(
+                        self.model_name,
+                        on_progress=on_download_progress,
+                        on_status=on_download_status,
+                    )
+                    if not downloaded:
+                        raise RuntimeError("Model download cancelled")
+                    if not is_model_downloaded(self.model_name):
+                        raise RuntimeError(
+                            f"Model download completed, but the installed files for "
+                            f"'{self.model_name}' are incomplete."
+                        )
+                finally:
+                    self._model_downloader = None
+
         self._set_state(
             EngineState.LOADING,
             f"Loading {self.backend_name} model: {self.model_name}...",
