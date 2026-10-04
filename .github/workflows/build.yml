@@ -91,10 +91,8 @@ jobs:
         restore-keys: |
           uv-${{ runner.os }}-
       
-    - name: Resolve and install dependencies
-      run: |
-        uv lock --upgrade-package sherpa-onnx-core
-        uv sync --group dev
+    - name: Install locked dependencies
+      run: uv sync --group dev --frozen
         
     - name: Build with Briefcase
       run: |
@@ -170,8 +168,9 @@ jobs:
     - name: Install system dependencies
       run: |
         sudo apt-get update
-        # libfuse2 is required for AppImage
-        sudo apt-get install -y libfuse2
+        # Qt/PySide6 runtime libraries are required by icon generation and
+        # headless packaging, while libfuse2 is required for AppImage tooling.
+        sudo apt-get install -y libegl1 libegl-dev libxkbcommon0 libxcb-xinerama0 libxcb-cursor0 libportaudio2 libfuse2
       
     - name: Install locked dependencies
       run: uv sync --group dev --frozen
