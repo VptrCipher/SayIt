@@ -974,14 +974,20 @@ class ConfigurationTab(QWidget):
         key = parts[-1].lower()
 
         for part in parts[:-1]:
-            mod = part.lower()
-            if mod in ("ctrl", "control"):
+            mod = part.strip().lower()
+            if mod in ("ctrl", "control", "⌃"):
                 modifiers.append("ctrl")
-            elif mod in ("alt", "option"):
+            elif mod in ("alt", "option", "⌥"):
                 modifiers.append("alt")
-            elif mod in ("shift",):
+            elif mod in ("shift", "⇧"):
                 modifiers.append("shift")
-            elif mod in ("meta", "cmd", "command", "win"):
+            elif mod in ("meta", "cmd", "command", "win", "⌘"):
                 modifiers.append("cmd")
 
-        return HotkeyConfig(modifiers=modifiers, key=key)
+        # QKeySequence can stringify differently across Qt/platform versions.
+        # Never allow an unrecognized modifier to propagate as an invalid
+        # HotkeyConfig; fall back to the same safe default used by setup.
+        if not modifiers:
+            return HotkeyConfig()
+
+        return HotkeyConfig(modifiers=list(dict.fromkeys(modifiers)), key=key.strip())
