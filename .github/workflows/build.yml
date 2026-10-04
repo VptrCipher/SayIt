@@ -170,8 +170,11 @@ jobs:
     - name: Install system dependencies
       run: |
         sudo apt-get update
-        # libfuse2 is required for AppImage
-        sudo apt-get install -y libfuse2
+        # Qt/PySide icon generation and the packaged app need these runtime
+        # libraries in the build environment. libfuse2 is required by AppImage.
+        sudo apt-get install -y \
+          libegl1 libegl-dev libxkbcommon0 libxcb-xinerama0 libxcb-cursor0 \
+          libportaudio2 libfuse2
       
     - name: Install locked dependencies
       run: uv sync --group dev --frozen
