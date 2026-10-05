@@ -36,7 +36,11 @@ def test_ctrl_page_up_round_trips_through_qt_parser(qtbot):
 
     result = tab._parse_key_sequence()
 
-    assert result == HotkeyConfig(modifiers=["ctrl"], key="page up")
+    # Qt 6 normalizes Page Up to its short display name "PgUp". The runtime
+    # normalizer must translate that persisted value back to pynput's
+    # "page_up" key name.
+    assert result == HotkeyConfig(modifiers=["ctrl"], key="pgup")
+    assert _normalize_trigger_key(result.key) == "page_up"
 
 
 def test_custom_hotkey_survives_settings_disk_roundtrip(tmp_path):
