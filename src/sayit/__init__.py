@@ -1,4 +1,4 @@
-__version__ = "0.1.1"
+__version__ = "0.1.2"
 
 # Technical identifier — used for data/config directory names, the autostart
 # registry key, QApplication.setApplicationName, and logging. MUST remain
