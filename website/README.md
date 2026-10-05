@@ -26,9 +26,9 @@ Stages A–H are complete. Highlights:
   table, privacy teaser
 - `/download`: download center consuming a static `/release-manifest.json`
   (schema in [`src/lib/release.ts`](src/lib/release.ts), example in
-  [`release-manifest.example.json`](release-manifest.example.json)). While no
-  release exists it shows an honest "first release hasn't been published yet"
-  state with working GitHub fallbacks; cards link to the installation guide
+  [`release-manifest.example.json`](release-manifest.example.json)). When release
+  data is unavailable it shows an honest fallback state with working GitHub
+  fallbacks; cards link to the installation guide
 - `/install`: platform-aware guides (Windows / Linux / Source) in accessible
   tabs that default to the detected platform and deep-link via URL hash.
   Verified-only requirements, exact commands (uv / python -m sayit /
