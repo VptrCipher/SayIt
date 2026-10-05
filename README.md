@@ -180,14 +180,14 @@ has been measured.
 
 ### Normal users
 
-The `v0.1.1` release is built and released. Download it from the
+The `v0.1.2` release is built and released. Download it from the
 [Releases page](https://github.com/VptrCipher/SayIt/releases/latest) or visit
 [https://vptrcipher.github.io/SayIt/](https://vptrcipher.github.io/SayIt/). The
 release artifacts are built by CI and named:
 
 - **Windows:** `SayIt-Setup-x64.exe` (Inno Setup installer). Unsigned; see
   [Release status](#release-status) for the expected SmartScreen notice.
-- **Linux:** `SayIt-0.1.1-Linux-x86_64.AppImage`. Mark it executable
+- **Linux:** `SayIt-0.1.2-Linux-x86_64.AppImage`. Mark it executable
   (`chmod +x`) and run.
 
 Verify your download against the published checksums (`checksums.txt` and the
@@ -217,7 +217,7 @@ supported production backend.
 
 ## Release status
 
-`v0.1.1` is the current **bugfix release**. What is verified:
+`v0.1.2` is the current **bugfix release**. What is verified:
 
 - ✅ Automated test suite: 916 passed, 5 deselected.
 - ✅ Warm performance measured (see [Performance](#performance)).
