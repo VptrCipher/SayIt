@@ -1,6 +1,6 @@
-# Changelog
+# Changelog\n\n## [0.1.2] - 2026-10-05\n\n### Custom hotkeys\n- Hardened custom hotkey runtime registration and replacement so a newly applied shortcut replaces the old listener cleanly.\n- Normalized Qt special-key names (including Page Up/Down, Print Screen, locks, Backspace, Return, and arrows) to the pynput key names used by the global listener.\n- Added regression coverage for special keys, character/function keys, settings persistence, and Qt-to-runtime key normalization.\n
 
-All notable changes to this project are documented here. The project version in `pyproject.toml` is `0.1.1`. Version 0.1.1 is a bugfix/release update built from the current main branch.
+All notable changes to this project are documented here. The project version in `pyproject.toml` is `0.1.2`. Version 0.1.2 is a reliability/bugfix release focused on custom hotkey robustness and persistence.
 
 This changelog describes work completed during a reliability, UX, and
 privacy-hardening effort. Items are listed only where they correspond to actual
