@@ -1,6 +1,6 @@
 [project]
 name = "sayit"
-version = "0.1.1"
+version = "0.1.2"
 description = "Local-first push-to-talk voice typing for your desktop"
 readme = "README.md"
 requires-python = ">=3.12"
@@ -63,7 +63,7 @@ markers = [
 [tool.briefcase]
 project_name = "SayIt"
 bundle = "com.sayit"
-version = "0.1.1"
+version = "0.1.2"
 author = "SayIt"
 license.file = "LICENSE"
 
