@@ -5,23 +5,23 @@
     "in website/public/. Until then the download page shows its honest",
     "'no release yet' fallback. See website/src/lib/release.ts for the schema."
   ],
-  "version": "0.1.0",
-  "release_date": "2026-10-03",
+  "version": "0.1.2",
+  "release_date": "2026-10-05",
   "stable": true,
   "platforms": {
     "windows": {
       "architecture": "x64",
       "format": "exe",
-      "url": "https://github.com/VptrCipher/SayIt/releases/download/v0.1.0/SayIt-Setup-x64.exe",
-      "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
-      "size_bytes": 503316480
+      "url": "https://github.com/VptrCipher/SayIt/releases/download/v0.1.2/SayIt-Setup-x64.exe",
+      "sha256": "3d3940a8574f7dad0bab07749685d78392833c948c3f45a84494603f76c404b2",
+      "size_bytes": 128015754"
     },
     "linux": {
       "architecture": "x86_64",
       "format": "AppImage",
-      "url": "https://github.com/VptrCipher/SayIt/releases/download/v0.1.0/SayIt-0.1.0-Linux-x86_64.AppImage",
-      "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
-      "size_bytes": 157286400
+      "url": "https://github.com/VptrCipher/SayIt/releases/download/v0.1.2/SayIt-0.1.2-Linux-x86_64.AppImage",
+      "sha256": "9acb842045aeb5cf2cfd482b261da399f17cf2a86bb4a42b9ac1ab456d9f2248",
+      "size_bytes": 237795832"
     }
   }
 }
