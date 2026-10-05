@@ -6,7 +6,7 @@
 
 #define MyAppName "SayIt"
 #ifndef MyAppVersion
-  #define MyAppVersion "0.1.1"
+  #define MyAppVersion "0.1.2"
 #endif
 #define MyAppPublisher "SayIt"
 #define MyAppURL "https://github.com/VptrCipher/SayIt"
