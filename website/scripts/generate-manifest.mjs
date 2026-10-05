@@ -87,7 +87,7 @@ function findSingleFile(files, extension) {
 export async function generateReleaseManifest(options) {
   const { tag, repo, releaseDate, releaseFilesDir, outDir } = options;
 
-  if (!tag || typeof tag !== "string") throw new Error("--tag is required (e.g. v0.1.0)");
+  if (!tag || typeof tag !== "string") throw new Error("--tag is required (e.g. v0.1.2)");
   const version = stripTagPrefix(tag);
   if (!VERSION_PATTERN.test(version)) {
     throw new Error(`Tag "${tag}" does not yield a valid semver version ("${version}")`);
