@@ -38,6 +38,12 @@ SmartScreen may warn on first run. Signing is a release consideration, not done.
 
 ---
 
+## Current release — SayIt v0.1.2
+
+v0.1.2 is the current published release. Windows and Linux artifacts were rebuilt and the release manifest/checksums were refreshed through CI. Historical v0.1.1 validation notes below are retained as release history; they are not the current release status.
+
+---
+
 Pre-release validation gates for the v0.1.1 bugfix release. This is a checklist to
 run **later**; items marked pending reflect what has not yet been validated.
 
