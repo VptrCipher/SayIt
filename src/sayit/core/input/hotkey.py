@@ -14,6 +14,40 @@ from ..settings.settings import Settings, get_settings
 logger = get_logger(__name__)
 
 
+# QKeySequence uses human-readable names for several non-character keys while
+# pynput exposes Python-style Key attributes. Keep the translation here so a
+# value saved by the settings UI is also a value the runtime can actually bind.
+_SPECIAL_KEY_ALIASES = {
+    "page up": "page_up",
+    "pageup": "page_up",
+    "pgup": "page_up",
+    "page down": "page_down",
+    "pagedown": "page_down",
+    "pgdown": "page_down",
+    "print screen": "print_screen",
+    "printscreen": "print_screen",
+    "scroll lock": "scroll_lock",
+    "scrolllock": "scroll_lock",
+    "num lock": "num_lock",
+    "numlock": "num_lock",
+    "caps lock": "caps_lock",
+    "capslock": "caps_lock",
+    "back space": "backspace",
+    "backspace": "backspace",
+    "return": "enter",
+    "arrow up": "up",
+    "arrow down": "down",
+    "arrow left": "left",
+    "arrow right": "right",
+}
+
+
+def _normalize_trigger_key(key_name: str) -> str:
+    """Normalize a persisted/UI key name to pynput's Key attribute name."""
+    normalized = " ".join((key_name or "").strip().lower().split())
+    return _SPECIAL_KEY_ALIASES.get(normalized, normalized.replace(" ", "_"))
+
+
 class HotkeyListener(QObject):
     """
     Listens for hotkey combinations.
@@ -107,16 +141,28 @@ class _PynputHotkeyListenerImpl:
     def _update_trigger_key(self, key_name: str) -> None:
         from pynput import keyboard
 
-        if key_name != "space":
-            try:
-                self._trigger_key = getattr(keyboard.Key, key_name)
-            except AttributeError:
-                self._trigger_key = keyboard.KeyCode.from_char(key_name)
-        else:
+        normalized = _normalize_trigger_key(key_name)
+        if normalized == "space":
             self._trigger_key = keyboard.Key.space
+            return
+
+        try:
+            self._trigger_key = getattr(keyboard.Key, normalized)
+        except AttributeError:
+            # Character keys (letters, digits, punctuation) are represented as
+            # KeyCode values by pynput. This also handles symbols captured by
+            # QKeySequenceEdit without requiring a hard-coded key list.
+            try:
+                self._trigger_key = keyboard.KeyCode.from_char(key_name.strip())
+            except (TypeError, ValueError):
+                logger.warning(
+                    "Unsupported custom hotkey key %r; falling back to Space",
+                    key_name,
+                )
+                self._trigger_key = keyboard.Key.space
 
     def update_config(self, trigger_key: str, modifiers: Set[str]) -> None:
-        self._required_modifier_types = modifiers
+        self._required_modifier_types = set(modifiers)
         self._update_trigger_key(trigger_key)
 
     def _check_hotkey(self) -> bool:
