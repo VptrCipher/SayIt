@@ -20,7 +20,7 @@ inserted at your cursor in any application.
 
 </div>
 
-> **Release status:** `v0.1.1` has been **built and released**. The official
+> **Release status:** `v0.1.2` has been **built and released**. The official
 > website is **https://vptrcipher.github.io/SayIt/**. See [Release status](#release-status)
 > for details.
 
