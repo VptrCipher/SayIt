@@ -96,7 +96,7 @@ describe("Home page (landing redesign)", () => {
     expect(screen.queryByText(/download for (windows|linux)/i)).not.toBeInTheDocument();
   });
 
-  it("does not display a version number — none has been released", () => {
+  it("does not hardcode a version number in the homepage", () => {
     const { container } = render(<HomePage />);
     expect(container.textContent ?? "").not.toMatch(/v?\d+\.\d+\.\d+/);
   });
