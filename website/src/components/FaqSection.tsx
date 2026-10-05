@@ -48,8 +48,8 @@ const FAQ_ITEMS: Array<{ question: string; answer: React.ReactNode }> = [
     question: "Where do downloads come from?",
     answer: (
       <>
-        GitHub Releases, with published checksums. Until the first public release there are no
-        installers yet — the{" "}
+        GitHub Releases, with published checksums. The download center reflects the latest
+        published release — the{" "}
         <Link
           href="/download"
           className="font-medium text-strong underline decoration-line-strong underline-offset-2 hover:text-accent-text"
