@@ -58,7 +58,7 @@ const FAKE_APPIMAGE = "fake appimage bytes";
 
 async function writeValidFixtures(dir: string) {
   await writeArtifact(dir, "SayIt-Setup-x64.exe", FAKE_EXE);
-  await writeArtifact(dir, "SayIt-v0.1.0-Linux-x86_64.AppImage", FAKE_APPIMAGE);
+  await writeArtifact(dir, "SayIt-v0.1.2-Linux-x86_64.AppImage", FAKE_APPIMAGE);
 }
 
 describe("release manifest generator", () => {
@@ -68,9 +68,9 @@ describe("release manifest generator", () => {
     await writeValidFixtures(dir);
 
     const { manifest, manifestPath, checksumsPath } = await generateReleaseManifest({
-      tag: "v0.1.0",
+      tag: "v0.1.2",
       repo: "VptrCipher/SayIt",
-      releaseDate: "2026-10-03T12:00:00Z",
+      releaseDate: "2026-10-05T12:00:00Z",
       releaseFilesDir: dir,
       outDir: out,
     });
@@ -78,20 +78,20 @@ describe("release manifest generator", () => {
     // The lock between CI-side generation and site-side consumption:
     expect(validateReleaseManifest(manifest)).toEqual(manifest);
 
-    expect(manifest.version).toBe("0.1.0");
-    expect(manifest.release_date).toBe("2026-10-03");
+    expect(manifest.version).toBe("0.1.2");
+    expect(manifest.release_date).toBe("2026-10-05");
     expect(manifest.stable).toBe(true);
 
     const windows = manifest.platforms.windows;
     expect(windows.url).toBe(
-      "https://github.com/VptrCipher/SayIt/releases/download/v0.1.0/SayIt-Setup-x64.exe",
+      "https://github.com/VptrCipher/SayIt/releases/download/v0.1.2/SayIt-Setup-x64.exe",
     );
     expect(windows.size_bytes).toBe(FAKE_EXE.length);
     expect(windows.sha256).toMatch(/^[a-f0-9]{64}$/);
 
     const linux = manifest.platforms.linux;
     expect(linux.url).toBe(
-      "https://github.com/VptrCipher/SayIt/releases/download/v0.1.0/SayIt-v0.1.0-Linux-x86_64.AppImage",
+      "https://github.com/VptrCipher/SayIt/releases/download/v0.1.2/SayIt-v0.1.2-Linux-x86_64.AppImage",
     );
     expect(linux.size_bytes).toBe(FAKE_APPIMAGE.length);
 
@@ -114,7 +114,7 @@ describe("release manifest generator", () => {
 
     await expect(
       generateReleaseManifest({
-        tag: "v0.1.0",
+        tag: "v0.1.2",
         repo: "VptrCipher/SayIt",
         releaseFilesDir: dir,
         outDir: out,
@@ -131,11 +131,11 @@ describe("release manifest generator", () => {
       `${"0".repeat(64)}  SayIt-Setup-x64.exe\n`,
       "utf8",
     );
-    await writeArtifact(dir, "SayIt-v0.1.0-Linux-x86_64.AppImage", FAKE_APPIMAGE);
+    await writeArtifact(dir, "SayIt-v0.1.2-Linux-x86_64.AppImage", FAKE_APPIMAGE);
 
     await expect(
       generateReleaseManifest({
-        tag: "v0.1.0",
+        tag: "v0.1.2",
         repo: "VptrCipher/SayIt",
         releaseFilesDir: dir,
         outDir: out,
@@ -151,7 +151,7 @@ describe("release manifest generator", () => {
 
     await expect(
       generateReleaseManifest({
-        tag: "v0.1.0",
+        tag: "v0.1.2",
         repo: "VptrCipher/SayIt",
         releaseFilesDir: dir,
         outDir: out,
@@ -169,7 +169,7 @@ describe("release manifest generator", () => {
       execFileAsync(process.execPath, [
         scriptPath,
         "--tag",
-        "v0.1.0",
+        "v0.1.2",
         "--repo",
         "VptrCipher/SayIt",
         "--release-files",
@@ -183,13 +183,13 @@ describe("release manifest generator", () => {
 
 describe("manifest helper functions", () => {
   it("strips the v prefix from tags", () => {
-    expect(stripTagPrefix("v0.1.0")).toBe("0.1.0");
+    expect(stripTagPrefix("v0.1.2")).toBe("0.1.2");
     expect(stripTagPrefix("0.2.0")).toBe("0.2.0");
   });
 
   it("normalizes release dates and defaults to today", () => {
-    expect(toReleaseDate("2026-10-03T12:00:00Z")).toBe("2026-10-03");
-    expect(toReleaseDate("2026-10-03")).toBe("2026-10-03");
+    expect(toReleaseDate("2026-10-05T12:00:00Z")).toBe("2026-10-05");
+    expect(toReleaseDate("2026-10-05")).toBe("2026-10-05");
     expect(toReleaseDate(undefined)).toMatch(/^\d{4}-\d{2}-\d{2}$/);
     expect(() => toReleaseDate("October 3rd")).toThrow(/Unrecognized release date/);
   });
