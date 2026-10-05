@@ -7,21 +7,21 @@ import {
 } from "@/lib/release";
 
 const VALID_MANIFEST: ReleaseManifest = {
-  version: "0.1.0",
-  release_date: "2026-10-03",
+  version: "0.1.2",
+  release_date: "2026-10-05",
   stable: true,
   platforms: {
     windows: {
       architecture: "x64",
       format: "exe",
-      url: "https://github.com/VptrCipher/SayIt/releases/download/v0.1.0/SayIt-Setup-x64.exe",
+      url: "https://github.com/VptrCipher/SayIt/releases/download/v0.1.2/SayIt-Setup-x64.exe",
       sha256: "a".repeat(64),
       size_bytes: 503316480,
     },
     linux: {
       architecture: "x86_64",
       format: "AppImage",
-      url: "https://github.com/VptrCipher/SayIt/releases/download/v0.1.0/SayIt-0.1.0-Linux-x86_64.AppImage",
+      url: "https://github.com/VptrCipher/SayIt/releases/download/v0.1.2/SayIt-0.1.2-Linux-x86_64.AppImage",
     },
   },
 };
@@ -33,7 +33,7 @@ describe("validateReleaseManifest", () => {
 
   it("allows an empty platforms object (release exists, cards degrade honestly)", () => {
     const manifest = { ...VALID_MANIFEST, platforms: {} };
-    expect(validateReleaseManifest(manifest)).toMatchObject({ version: "0.1.0" });
+    expect(validateReleaseManifest(manifest)).toMatchObject({ version: "0.1.2" });
   });
 
   it("allows unknown extra keys for forward compatibility", () => {
@@ -74,7 +74,7 @@ describe("validateReleaseManifest", () => {
 
   it("rejects non-objects and garbage", () => {
     expect(validateReleaseManifest(null)).toBeNull();
-    expect(validateReleaseManifest("0.1.0")).toBeNull();
+    expect(validateReleaseManifest("0.1.2")).toBeNull();
     expect(validateReleaseManifest(42)).toBeNull();
   });
 
