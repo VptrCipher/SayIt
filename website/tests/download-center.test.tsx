@@ -5,21 +5,21 @@ import type { ReleaseManifest } from "@/lib/release";
 import { site } from "@/lib/site";
 
 const VALID_MANIFEST: ReleaseManifest = {
-  version: "0.1.0",
-  release_date: "2026-10-03",
+  version: "0.1.2",
+  release_date: "2026-10-05",
   stable: true,
   platforms: {
     windows: {
       architecture: "x64",
       format: "exe",
-      url: "https://github.com/VptrCipher/SayIt/releases/download/v0.1.0/SayIt-Setup-x64.exe",
+      url: "https://github.com/VptrCipher/SayIt/releases/download/v0.1.2/SayIt-Setup-x64.exe",
       sha256: "a".repeat(64),
       size_bytes: 503316480,
     },
     linux: {
       architecture: "x86_64",
       format: "AppImage",
-      url: "https://github.com/VptrCipher/SayIt/releases/download/v0.1.0/SayIt-0.1.0-Linux-x86_64.AppImage",
+      url: "https://github.com/VptrCipher/SayIt/releases/download/v0.1.2/SayIt-0.1.2-Linux-x86_64.AppImage",
     },
   },
 };
@@ -101,7 +101,7 @@ describe("DownloadCenter — release available", () => {
     render(<DownloadCenter platform="windows" />);
 
     await waitFor(() => {
-      expect(screen.getByText("v0.1.0")).toBeInTheDocument();
+      expect(screen.getByText("v0.1.2")).toBeInTheDocument();
     });
 
     const windowsDownload = screen.getByRole("link", { name: "Download for Windows" });
@@ -110,7 +110,7 @@ describe("DownloadCenter — release available", () => {
     expect(linuxDownload).toHaveAttribute("href", VALID_MANIFEST.platforms.linux?.url);
 
     // The banner and both cards each show the release date.
-    expect(screen.getAllByText(/Released 2026-10-03/)).toHaveLength(3);
+    expect(screen.getAllByText(/Released 2026-10-05/)).toHaveLength(3);
 
     expect(screen.getByText("Download size: 480 MB")).toBeInTheDocument();
     expect(screen.getByText(/SHA-256/i)).toBeInTheDocument();
