@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 import signal
 import sys
 from datetime import datetime
@@ -1005,7 +1006,7 @@ def main():
                 else None
             )
             loaded = (
-                __import__("pathlib").Path(sd._libname).resolve()
+                Path(sd._libname).resolve()
                 if getattr(sd, "_libname", None)
                 and str(getattr(sd, "_libname", "")).startswith("/")
                 else None
