@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import ctypes
+import ctypes.util
 import sys
 from pathlib import Path
 
@@ -19,31 +20,56 @@ __app_name__ = "SayIt"
 __display_name__ = "SayIt"
 
 
-# Linux only: python-sounddevice expects PortAudio to be available as a system
-# shared library. The release AppImage is intentionally self-contained, so the
-# release pipeline vendors a known-good PortAudio build and preloads it before
-# sounddevice can resolve the library. Keeping the handle alive also prevents
-# the library from being unloaded while Python extension modules use it.
 _bundled_portaudio = None
+_bundled_portaudio_path: Path | None = None
 
 
-def _preload_bundled_portaudio() -> None:
-    global _bundled_portaudio
+def _configure_bundled_portaudio() -> None:
+    """Make the packaged Linux PortAudio visible to python-sounddevice.
+
+    On Linux, sounddevice asks ctypes.util.find_library("portaudio") for a
+    system library. An AppImage cannot assume that library exists on the user's
+    distro. The release pipeline therefore generates a compatible PortAudio
+    shared library under this package and redirects only the "portaudio" lookup
+    to that exact file before sounddevice is imported.
+    """
+    global _bundled_portaudio, _bundled_portaudio_path
 
     if not sys.platform.startswith("linux"):
         return
 
     vendor_dir = Path(__file__).resolve().parent / "_vendor" / "linux"
-    candidates = sorted(vendor_dir.glob("libportaudio.so*"), reverse=True)
+    candidates = sorted(
+        (path for path in vendor_dir.glob("libportaudio.so*") if path.is_file()),
+        reverse=True,
+    )
     if not candidates:
         return
 
-    for library in candidates:
-        try:
-            _bundled_portaudio = ctypes.CDLL(str(library), mode=ctypes.RTLD_GLOBAL)
-            return
-        except OSError:
-            continue
+    library = candidates[0]
+    system_find_library = ctypes.util.find_library
+
+    def find_library(name: str):
+        if name == "portaudio":
+            return str(library)
+        return system_find_library(name)
+
+    # sounddevice imports find_library directly, so this must be installed
+    # before the first "import sounddevice" happens.
+    ctypes.util.find_library = find_library
+    _bundled_portaudio_path = library
+
+    try:
+        # Keep a process-wide handle alive and make PortAudio symbols available
+        # to extensions that resolve them through the process loader.
+        _bundled_portaudio = ctypes.CDLL(
+            str(library),
+            mode=getattr(ctypes, "RTLD_GLOBAL", 0),
+        )
+    except OSError:
+        # Leave the redirected lookup in place so sounddevice can surface a
+        # precise loading error rather than silently switching libraries.
+        _bundled_portaudio = None
 
 
-_preload_bundled_portaudio()
+_configure_bundled_portaudio()
