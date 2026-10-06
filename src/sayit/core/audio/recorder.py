@@ -7,6 +7,27 @@ if TYPE_CHECKING:
     import sounddevice as sd
 
 
+class _LazySoundDevice:
+    """Lazy proxy that keeps sounddevice import out of desktop startup."""
+
+    def __init__(self):
+        self._module = None
+
+    def _load(self):
+        if self._module is None:
+            import sounddevice
+            self._module = sounddevice
+        return self._module
+
+    def __getattr__(self, name):
+        return getattr(self._load(), name)
+
+
+# Tests and the recorder can keep using recorder.sd.*, while the real module is
+# imported only when an audio operation actually needs it.
+sd = _LazySoundDevice()
+
+
 @dataclass
 class AudioDevice:
     name: str
@@ -54,10 +75,6 @@ class AudioRecorder:
         self._last_error: Optional[str] = None
 
         try:
-            # Import sounddevice lazily so a Linux PortAudio problem cannot
-            # crash desktop startup during module import.
-            import sounddevice as sd
-
             self._device_sample_rate = float(self.sample_rate)
 
             self._stream = sd.InputStream(
@@ -72,7 +89,6 @@ class AudioRecorder:
 
         except Exception as e:
             try:
-                import sounddevice as sd
                 is_portaudio_error = isinstance(e, sd.PortAudioError)
             except Exception:
                 is_portaudio_error = False
@@ -224,8 +240,6 @@ class AudioRecorder:
 
     @staticmethod
     def list_devices() -> List[AudioDevice]:
-        import sounddevice as sd
-
         devices = []
 
         for i, device in enumerate(sd.query_devices()):
