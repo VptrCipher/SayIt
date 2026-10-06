@@ -31,7 +31,7 @@ const PLATFORMS: Platform[] = [
     name: "Linux",
     status: "Partially supported",
     tone: "neutral",
-    note: "AppImage builds exist but are less validated. Global hotkeys may require X11 and may not work under Wayland; clipboard insertion needs xclip.",
+    note: "AppImage releases are packaged with a self-contained PortAudio runtime and verified by a packaged launch smoke test. Global hotkeys may require X11 and clipboard insertion needs xclip.",
   },
   {
     name: "macOS",
