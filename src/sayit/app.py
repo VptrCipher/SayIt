@@ -988,6 +988,14 @@ def main():
     signal.signal(signal.SIGINT, lambda *args: QApplication.quit())
 
     settings = get_settings()
+
+    # CI-only smoke mode: exercise the packaged Python/QT startup path without
+    # opening the setup wizard or downloading a speech model. This is intentionally
+    # environment-gated and never changes normal user behavior.
+    if __import__("os").environ.get("SAYIT_LINUX_SMOKE_TEST") == "1":
+        logger.info("Linux packaged launch smoke test passed")
+        return
+
     if not settings.first_run_complete:
         wizard = SetupWizard()
         if wizard.exec() != SetupWizard.Accepted:
