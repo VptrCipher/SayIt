@@ -5,6 +5,7 @@ on:
     branches: [main]
     tags:
       - "v*"          # Release build runs on a version tag; builds the TAGGED commit.
+  pull_request:
   release:
     types: [created]  # Also build if a release is created from a tag.
   workflow_dispatch:  # Allow manual triggering
