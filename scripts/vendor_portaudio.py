@@ -59,7 +59,8 @@ mkdir -p /tmp/portaudio-src /tmp/portaudio-install
 curl -fsSL https://github.com/PortAudio/portaudio/archive/refs/tags/{PORTAUDIO_TAG}.tar.gz |
   tar -xz --strip-components=1 -C /tmp/portaudio-src
 
-cmake -S /tmp/portaudio-src -B /tmp/portaudio-build   -DCMAKE_BUILD_TYPE=Release   -DPA_BUILD_SHARED_LIBS=ON   -DPA_BUILD_STATIC=OFF   -DPA_BUILD_TESTS=OFF   -DPA_BUILD_EXAMPLES=OFF   -DPA_USE_ALSA=ON   -DPA_ALSA_DYNAMIC=ON
+cmake -S /tmp/portaudio-src -B /tmp/portaudio-build   -DCMAKE_BUILD_TYPE=Release   -DPA_BUILD_SHARED_LIBS=ON   -DPA_BUILD_STATIC=OFF   -DPA_BUILD_TESTS=OFF   -DPA_BUILD_EXAMPLES=OFF   -DPA_USE_ALSA=ON   -DPA_ALSA_DYNAMIC=ON \
+  -DCMAKE_POLICY_VERSION_MINIMUM=3.5
 
 cmake --build /tmp/portaudio-build --parallel
 cmake --install /tmp/portaudio-build --prefix /tmp/portaudio-install
