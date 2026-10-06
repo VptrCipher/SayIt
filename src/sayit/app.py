@@ -991,30 +991,21 @@ def main():
 
     settings = get_settings()
 
-    # CI-only smoke mode: exercise the packaged Python/QT startup path without
-    # opening the setup wizard or downloading a speech model. This is intentionally
-    # environment-gated and never changes normal user behavior.
+    # CI-only smoke mode: exercise the packaged Python/Qt startup path without
+    # opening the setup wizard, touching audio hardware, or downloading a model.
+    # Audio capture remains lazy and is tested separately when a user records.
     if os.environ.get("SAYIT_LINUX_SMOKE_TEST") == "1":
         if sys.platform.startswith("linux"):
-            import sounddevice as sd
+            from . import _bundled_portaudio_path, _bundled_portaudio
 
-            from . import _bundled_portaudio_path
-
-            bundled = (
-                _bundled_portaudio_path.resolve()
-                if _bundled_portaudio_path is not None
-                else None
-            )
-            loaded = (
-                Path(sd._libname).resolve()
-                if getattr(sd, "_libname", None)
-                and str(getattr(sd, "_libname", "")).startswith("/")
-                else None
-            )
-            if bundled is None or loaded is None or bundled != loaded:
+            if _bundled_portaudio_path is None or _bundled_portaudio is None:
                 raise RuntimeError(
-                    "Linux smoke test failed: sounddevice did not resolve the bundled "
-                    "PortAudio runtime"
+                    "Linux smoke test failed: bundled PortAudio runtime is unavailable"
+                )
+            if not _bundled_portaudio_path.is_file():
+                raise RuntimeError(
+                    f"Linux smoke test failed: missing PortAudio runtime at "
+                    f"{_bundled_portaudio_path}"
                 )
         logger.info("Linux packaged launch smoke test passed")
         return
