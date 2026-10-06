@@ -1,8 +1,10 @@
 from dataclasses import dataclass
-from typing import Callable, List, Optional
+from typing import TYPE_CHECKING, Callable, List, Optional
 
 import numpy as np
-import sounddevice as sd
+
+if TYPE_CHECKING:
+    import sounddevice as sd
 
 
 @dataclass
@@ -30,7 +32,7 @@ class AudioRecorder:
         self.on_audio_level = on_audio_level
         self.on_audio_spectrum = on_audio_spectrum
 
-        self._stream: Optional[sd.InputStream] = None
+        self._stream: Optional["sd.InputStream"] = None
         self._audio_buffer: List[np.ndarray] = []
         self._is_recording = False
         self._device_sample_rate: Optional[float] = None
@@ -52,6 +54,9 @@ class AudioRecorder:
         self._last_error: Optional[str] = None
 
         try:
+            # Import sounddevice lazily so a Linux PortAudio problem cannot
+            # crash desktop startup during module import.
+            import sounddevice as sd
 
             self._device_sample_rate = float(self.sample_rate)
 
@@ -65,20 +70,24 @@ class AudioRecorder:
             self._is_recording = True
             return True
 
-        except sd.PortAudioError as e:
-            error_str = str(e).lower()
-            # Check for macOS permission-related errors
-            if "permission" in error_str or "not allowed" in error_str:
-                self._last_error = (
-                    "Microphone access denied. Please grant permission in "
-                    "System Settings > Privacy & Security > Microphone"
-                )
-            else:
-                self._last_error = f"Audio device error: {e}"
-            self._is_recording = False
-            return False
         except Exception as e:
-            self._last_error = f"Failed to start recording: {e}"
+            try:
+                import sounddevice as sd
+                is_portaudio_error = isinstance(e, sd.PortAudioError)
+            except Exception:
+                is_portaudio_error = False
+
+            if is_portaudio_error:
+                error_str = str(e).lower()
+                if "permission" in error_str or "not allowed" in error_str:
+                    self._last_error = (
+                        "Microphone access denied. Please grant permission in "
+                        "System Settings > Privacy & Security > Microphone"
+                    )
+                else:
+                    self._last_error = f"Audio device error: {e}"
+            else:
+                self._last_error = f"Failed to start recording: {e}"
             self._is_recording = False
             return False
 
@@ -215,6 +224,8 @@ class AudioRecorder:
 
     @staticmethod
     def list_devices() -> List[AudioDevice]:
+        import sounddevice as sd
+
         devices = []
 
         for i, device in enumerate(sd.query_devices()):
