@@ -52,7 +52,7 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y libegl1 libegl-dev libxkbcommon0 libxcb-xinerama0 libxcb-cursor0 libportaudio2
-
+        
     - name: Install locked dependencies
       run: uv sync --group dev --frozen
         
@@ -159,6 +159,10 @@ jobs:
     - name: Install uv
       uses: astral-sh/setup-uv@v7
 
+    - name: Vendor Linux PortAudio runtime
+      run: |
+        python scripts/vendor_portaudio.py
+
     - name: Restore uv cache
       uses: actions/cache@v4
       with:
@@ -193,15 +197,31 @@ jobs:
     - name: Package AppImage
       run: |
         uv run briefcase package linux appimage
-        
+
+    - name: Smoke-test packaged Linux AppImage
+      env:
+        QT_QPA_PLATFORM: offscreen
+        SAYIT_LINUX_SMOKE_TEST: "1"
+      run: |
+        APPIMAGE=$(find dist -name "*.AppImage" -type f | head -1)
+        if [ -z "$APPIMAGE" ]; then
+          echo "Error: no packaged AppImage found in dist/"
+          find dist -maxdepth 2 -type f -print 2>/dev/null || true
+          exit 1
+        fi
+        chmod +x "$APPIMAGE"
+        echo "Launching packaged AppImage smoke test: $APPIMAGE"
+        "$APPIMAGE"
+
     - name: Find and rename AppImage
       id: appimage
       run: |
-        # Find the generated AppImage
-        APPIMAGE=$(find build -name "*.AppImage" -type f | head -1)
+        # Use the actual output of the package step. Do not fall back to the
+        # intermediate build/ AppImage; release assets must be the packaged file.
+        APPIMAGE=$(find dist -name "*.AppImage" -type f | head -1)
         if [ -z "$APPIMAGE" ]; then
-          echo "Error: No AppImage found!"
-          find build -type f -name "*" | head -50
+          echo "Error: No AppImage found in dist/"
+          find dist -type f -name "*" | head -50
           exit 1
         fi
         # Bare version without a leading "v" (v0.1.2 -> 0.1.2).
@@ -236,7 +256,6 @@ jobs:
     if: ${{ github.event_name == 'release' || startsWith(github.ref, 'refs/tags/v') || (github.ref == 'refs/heads/main' && contains(github.event.head_commit.message, '[release]')) }}
     needs: [build-windows, build-linux-x64]
     runs-on: ubuntu-latest
-    # No 'if' needed - this workflow only runs on release creation
     permissions:
       contents: write
     
@@ -259,15 +278,11 @@ jobs:
     - name: Prepare release files
       run: |
         mkdir release-files
-        # Find and copy all installer files + checksums
         find artifacts -name "*.exe" -exec cp {} release-files/ \;
         find artifacts -name "*.sha256" -exec cp {} release-files/ \;
         find artifacts -name "*.AppImage" -exec cp {} release-files/ \;
         ls -la release-files/
 
-    # Generates release-manifest.json + checksums.txt from the actual
-    # artifacts. The website download center consumes the manifest; this step
-    # fails the release when artifacts/checksums/versions are inconsistent.
     - name: Generate release manifest + checksums
       env:
         RELEASE_TAG: ${{ github.event.release.tag_name || env.APP_VERSION }}
