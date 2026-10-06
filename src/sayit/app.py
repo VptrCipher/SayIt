@@ -994,6 +994,27 @@ def main():
     # opening the setup wizard or downloading a speech model. This is intentionally
     # environment-gated and never changes normal user behavior.
     if os.environ.get("SAYIT_LINUX_SMOKE_TEST") == "1":
+        if sys.platform.startswith("linux"):
+            import sounddevice as sd
+
+            from . import _bundled_portaudio_path
+
+            bundled = (
+                _bundled_portaudio_path.resolve()
+                if _bundled_portaudio_path is not None
+                else None
+            )
+            loaded = (
+                __import__("pathlib").Path(sd._libname).resolve()
+                if getattr(sd, "_libname", None)
+                and str(getattr(sd, "_libname", "")).startswith("/")
+                else None
+            )
+            if bundled is None or loaded is None or bundled != loaded:
+                raise RuntimeError(
+                    "Linux smoke test failed: sounddevice did not resolve the bundled "
+                    "PortAudio runtime"
+                )
         logger.info("Linux packaged launch smoke test passed")
         return
 
