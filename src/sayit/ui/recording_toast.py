@@ -31,7 +31,7 @@ class WaveformWidget(QWidget):
         self._spectrum = [0.0] * self._bar_count
         self._target_spectrum = [0.0] * self._bar_count
         self._phase = 0.0
-        self._bar_color = QColor("#F1E7D8")
+        self._bar_color = QColor("#FF6600")
         self._timer = QTimer(self)
         self._timer.setInterval(33)
         self._timer.timeout.connect(self._tick)
@@ -147,7 +147,7 @@ class RecordingToast(QWidget):
         self._hide_after_animation = False
 
         self._waveform = WaveformWidget()
-        self._waveform.set_bar_color(QColor("#F5EAD9"))
+        self._waveform.set_bar_color(QColor("#FF6600"))
 
         self._build_ui(app_name)
         self._build_animation()
@@ -169,7 +169,7 @@ class RecordingToast(QWidget):
         from .theme import sayit_mark
 
         mark = QLabel()
-        mark.setPixmap(sayit_mark(18, color="#F5EAD9"))
+        mark.setPixmap(sayit_mark(20, color="#FF6600"))
         mark.setAccessibleName("SayIt")
         header_layout.addWidget(mark)
 
@@ -212,14 +212,14 @@ class RecordingToast(QWidget):
                 border-radius: 16px;
             }
             QLabel#RecordingToastTitle {
-                color: #F7EEDD;
+                color: #FF8A33;
                 font-size: 13px;
                 font-weight: 600;
                 font-family: "Avenir Next", "Futura", "Gill Sans";
                 letter-spacing: 0.3px;
             }
             QLabel#RecordingToastHint {
-                color: rgba(247, 238, 221, 130);
+                color: rgba(255, 138, 51, 170);
                 font-size: 10px;
                 letter-spacing: 0.2px;
             }
