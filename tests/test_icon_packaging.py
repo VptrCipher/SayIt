@@ -12,8 +12,8 @@ def test_canonical_icon_exists():
     assert icon.is_file()
     text = icon.read_text(encoding="utf-8")
     assert "<svg " in text
-    assert 'fill="#191510"' in text
-    assert 'id="gold"' in text
+    assert 'fill="#0C0C0C"' in text
+    assert 'id="si-orange"' in text
 
 def test_canonical_icon_matches_web_icon():
     a = (ROOT / "icons" / "sayit.svg").read_text(encoding="utf-8")
