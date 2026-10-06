@@ -155,79 +155,50 @@ class RecordingToast(QWidget):
     def _build_ui(self, app_name: str) -> None:
         layout = QVBoxLayout(self)
         layout.setContentsMargins(0, 0, 0, 0)
-        layout.setSpacing(8)
-        layout.setAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
+        layout.setSpacing(0)
+        layout.setAlignment(Qt.AlignCenter)
 
-        header = QFrame()
-        header.setObjectName("RecordingToastHeader")
-        header_layout = QHBoxLayout(header)
-        header_layout.setContentsMargins(16, 10, 16, 10)
-        header_layout.setSpacing(8)
-        header_layout.setAlignment(Qt.AlignCenter)
+        panel = QFrame()
+        panel.setObjectName("RecordingToastPanel")
+        panel_layout = QHBoxLayout(panel)
+        panel_layout.setContentsMargins(14, 9, 16, 9)
+        panel_layout.setSpacing(12)
+        panel_layout.setAlignment(Qt.AlignCenter)
 
-        # SayIt mark (light variant to sit on the dark overlay).
+        # Compact SayIt SI monogram — replaces the old microphone/listening label
+        # with the same high-signal visual language as the product branding.
         from .theme import sayit_mark
 
         mark = QLabel()
-        mark.setPixmap(sayit_mark(20, color="#FF6600"))
+        mark.setPixmap(sayit_mark(22, color="#FF6600"))
         mark.setAccessibleName("SayIt")
-        header_layout.addWidget(mark)
+        panel_layout.addWidget(mark, alignment=Qt.AlignVCenter)
 
-        # State-based copy (not implementation details). Defaults to the
-        # listening state shown when the overlay first appears.
+        self._waveform = self._waveform
+        panel_layout.addWidget(self._waveform, alignment=Qt.AlignVCenter)
+
         self._title = QLabel("Listening")
-        self._title.setObjectName("RecordingToastTitle")
-        self._title.setAlignment(Qt.AlignCenter)
+        self._title.setVisible(False)
         self._title.setAccessibleName("Dictation status")
-        header_layout.addWidget(self._title)
 
-        wave_frame = QFrame()
-        wave_frame.setObjectName("RecordingToastWave")
-        wave_layout = QHBoxLayout(wave_frame)
-        wave_layout.setContentsMargins(12, 6, 12, 6)
-        wave_layout.setAlignment(Qt.AlignCenter)
-        wave_layout.addWidget(self._waveform)
-
-        # Subtle hint beneath the waveform.
-        self._hint = QLabel("Release Ctrl + Space")
-        self._hint.setObjectName("RecordingToastHint")
-        self._hint.setAlignment(Qt.AlignCenter)
-
-        layout.addWidget(header, alignment=Qt.AlignCenter)
-        layout.addWidget(wave_frame, alignment=Qt.AlignCenter)
-        layout.addWidget(self._hint, alignment=Qt.AlignCenter)
+        layout.addWidget(panel, alignment=Qt.AlignCenter)
 
         self.setStyleSheet(
             """
-            QFrame#RecordingToastHeader {
-                background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
-                    stop:0 #0C0C0C, stop:1 #1A1713);
-                border: 1px solid rgba(255, 255, 255, 20);
-                border-radius: 20px;
-            }
-            QFrame#RecordingToastWave {
-                background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
-                    stop:0 #0A0A0A, stop:1 #13100D);
-                border: 1px solid rgba(255, 255, 255, 18);
-                border-radius: 16px;
-            }
-            QLabel#RecordingToastTitle {
-                color: #FF8A33;
-                font-size: 13px;
-                font-weight: 600;
-                font-family: "Avenir Next", "Futura", "Gill Sans";
-                letter-spacing: 0.3px;
-            }
-            QLabel#RecordingToastHint {
-                color: rgba(255, 138, 51, 170);
-                font-size: 10px;
-                letter-spacing: 0.2px;
+            QFrame#RecordingToastPanel {
+                background: qlineargradient(
+                    x1:0, y1:0, x2:1, y2:1,
+                    stop:0 #090909, stop:0.55 #11100E, stop:1 #17110D
+                );
+                border: 1px solid rgba(255, 102, 0, 210);
+                border-radius: 17px;
             }
             """
         )
 
         self.adjustSize()
         self.hide()
+
 
     def _build_animation(self) -> None:
         self._anim_group = QParallelAnimationGroup(self)
