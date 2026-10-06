@@ -70,7 +70,9 @@ class HotkeyListener(QObject):
         settings = get_settings()
         self._setup_hotkey(settings)
 
-        self._impl = _PynputHotkeyListenerImpl(self)
+        # Do not initialize the OS keyboard backend during application construction.
+        # Linux Wayland/headless environments may not expose an X connection.
+        self._impl: Optional[_PynputHotkeyListenerImpl] = None
 
     def update_settings(self, settings: Settings) -> None:
         """Replace the active hotkey registration with the newly saved config.
@@ -81,7 +83,7 @@ class HotkeyListener(QObject):
         this prevents stale registrations and guarantees the new hotkey takes
         effect immediately.
         """
-        was_running = self._impl.is_running
+        was_running = self._impl.is_running if self._impl is not None else False
 
         if self._is_hotkey_active:
             # A hotkey change while the old combination is held must not leave
@@ -90,23 +92,35 @@ class HotkeyListener(QObject):
 
         # Always clear the implementation's pressed-key state. This is
         # especially important when a prior combination was partially pressed.
-        self._impl.stop()
+        if self._impl is not None:
+            self._impl.stop()
 
         self._setup_hotkey(settings)
-        self._impl.update_config(self._trigger_key, self._required_modifier_types)
+        if self._impl is not None:
+            self._impl.update_config(self._trigger_key, self._required_modifier_types)
 
-        if was_running:
-            self._impl.start()
+            if was_running:
+                self._impl.start()
 
     def _setup_hotkey(self, settings: Settings) -> None:
         self._required_modifier_types: Set[str] = set(settings.hotkey.modifiers)
         self._trigger_key = settings.hotkey.key
 
     def start(self) -> None:
+        if self._impl is None:
+            try:
+                self._impl = _PynputHotkeyListenerImpl(self)
+            except ImportError as exc:
+                logger.warning(
+                    "Global hotkeys are unavailable on this Linux session: %s",
+                    exc,
+                )
+                return
         self._impl.start()
 
     def stop(self) -> None:
-        self._impl.stop()
+        if self._impl is not None:
+            self._impl.stop()
 
     def _on_hotkey_pressed(self) -> None:
         if not self._is_hotkey_active:
