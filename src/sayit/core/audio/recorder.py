@@ -8,6 +8,17 @@ if TYPE_CHECKING:
 
 
 class _LazySoundDevice:
+    """Resolve sounddevice only when an audio operation actually needs it."""
+
+    def __getattr__(self, name: str):
+        import sounddevice as real_sounddevice
+        return getattr(real_sounddevice, name)
+
+
+sd = _LazySoundDevice()
+
+
+class _LazySoundDevice:
     """Lazy proxy that keeps sounddevice import out of desktop startup."""
 
     def __init__(self):
