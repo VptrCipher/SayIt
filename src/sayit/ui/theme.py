@@ -15,21 +15,17 @@ This module is presentation-only. It does not change application behavior.
 from __future__ import annotations
 
 from PySide6.QtCore import QPointF, Qt
-from PySide6.QtGui import QBrush, QColor, QIcon, QPainter, QPen, QPixmap
+from PySide6.QtGui import QBrush, QColor, QIcon, QPainter, QPainterPath, QPen, QPixmap
 
 # Restrained accent used for interactive/recording emphasis. A quiet teal rather
 # than a neon "AI" color.
-ACCENT = "#3B9C8C"
-ACCENT_RECORDING = "#D9534F"  # calm red, used only for the active-recording state
+BRAND_ORANGE = "#FF6600"
+ACCENT = BRAND_ORANGE
+ACCENT_RECORDING = BRAND_ORANGE
 
 
-def sayit_mark(size: int = 64, color: str = "#2E2E2E") -> QPixmap:
-    """Return a square QPixmap with the SayIt microphone + waveform mark.
-
-    The mark is a rounded microphone capsule flanked by a few waveform bars. It
-    is intentionally minimal and monochrome so it works at small sizes and on
-    any background.
-    """
+def sayit_mark(size: int = 64, color: str = BRAND_ORANGE) -> QPixmap:
+    """Return the geometric SayIt SI monogram used across the app."""
     pm = QPixmap(size, size)
     pm.fill(Qt.transparent)
 
@@ -37,59 +33,46 @@ def sayit_mark(size: int = 64, color: str = "#2E2E2E") -> QPixmap:
     p.setRenderHint(QPainter.Antialiasing)
 
     c = QColor(color)
-    s = size
-
-    # Microphone capsule (centered vertical rounded rect).
-    cap_w = s * 0.26
-    cap_h = s * 0.46
-    cap_x = (s - cap_w) / 2
-    cap_y = s * 0.14
-    p.setPen(Qt.NoPen)
-    p.setBrush(QBrush(c))
-    p.drawRoundedRect(cap_x, cap_y, cap_w, cap_h, cap_w / 2, cap_w / 2)
-
-    # Mic stand + base.
-    pen = QPen(c, max(1.5, s * 0.035))
-    pen.setCapStyle(Qt.RoundCap)
-    p.setPen(pen)
+    s = float(size)
+    stroke = max(2.0, s * 0.105)
+    p.setPen(QPen(c, stroke, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
     p.setBrush(Qt.NoBrush)
-    stand_top = cap_y + cap_h + s * 0.02
-    stand_bottom = s * 0.80
-    center_x = s / 2
-    # Cradle arc under the capsule.
-    arc_r = cap_w * 1.15
-    p.drawArc(
-        int(center_x - arc_r),
-        int(cap_y + cap_h - arc_r * 0.6),
-        int(arc_r * 2),
-        int(arc_r * 1.2),
-        200 * 16,
-        140 * 16,
-    )
-    p.drawLine(QPointF(center_x, stand_top), QPointF(center_x, stand_bottom))
-    p.drawLine(
-        QPointF(center_x - s * 0.12, stand_bottom),
-        QPointF(center_x + s * 0.12, stand_bottom),
-    )
 
-    # Waveform bars flanking the capsule (the "voice" motif).
-    bar_w = max(1.5, s * 0.03)
+    # Bold geometric S.
+    path_s = QPainterPath()
+    path_s.moveTo(s * 0.42, s * 0.27)
+    path_s.cubicTo(s * 0.28, s * 0.20, s * 0.16, s * 0.28, s * 0.17, s * 0.39)
+    path_s.cubicTo(s * 0.18, s * 0.50, s * 0.33, s * 0.49, s * 0.43, s * 0.54)
+    path_s.cubicTo(s * 0.53, s * 0.59, s * 0.51, s * 0.75, s * 0.36, s * 0.77)
+    path_s.cubicTo(s * 0.25, s * 0.79, s * 0.17, s * 0.73, s * 0.14, s * 0.68)
+    p.drawPath(path_s)
+
+    # Strong vertical I with compact angled accents.
     p.setPen(Qt.NoPen)
     p.setBrush(QBrush(c))
-    heights = [0.14, 0.24, 0.18]
-    for i, h in enumerate(heights):
-        bh = s * h
-        y = (s * 0.40) - bh / 2
-        left_x = cap_x - s * 0.08 - i * (bar_w + s * 0.035)
-        right_x = cap_x + cap_w + s * 0.08 + i * (bar_w + s * 0.035)
-        p.drawRoundedRect(left_x, y, bar_w, bh, bar_w / 2, bar_w / 2)
-        p.drawRoundedRect(right_x, y, bar_w, bh, bar_w / 2, bar_w / 2)
+    i_x = s * 0.58
+    i_y = s * 0.22
+    i_w = s * 0.12
+    i_h = s * 0.56
+    p.drawRoundedRect(i_x, i_y, i_w, i_h, i_w / 2, i_w / 2)
+    p.drawPolygon([
+        QPointF(i_x + i_w * 0.05, i_y),
+        QPointF(i_x + i_w * 0.95, i_y),
+        QPointF(i_x + i_w * 1.38, i_y + s * 0.09),
+        QPointF(i_x + i_w * 0.50, i_y + s * 0.09),
+    ])
+    p.drawPolygon([
+        QPointF(i_x + i_w * 0.05, i_y + i_h),
+        QPointF(i_x + i_w * 0.95, i_y + i_h),
+        QPointF(i_x + i_w * 1.38, i_y + i_h - s * 0.09),
+        QPointF(i_x + i_w * 0.50, i_y + i_h - s * 0.09),
+    ])
 
     p.end()
     return pm
 
 
-def sayit_icon(size: int = 64, color: str = "#2E2E2E") -> QIcon:
+def sayit_icon(size: int = 64, color: str = BRAND_ORANGE) -> QIcon:
     return QIcon(sayit_mark(size, color))
 
 
