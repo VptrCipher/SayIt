@@ -2,8 +2,22 @@ import time
 from dataclasses import dataclass
 
 import pyperclip
-from pynput.keyboard import Controller as KeyboardController
-from pynput.keyboard import Key
+
+
+class _LazyKeyboardController:
+    def __new__(cls):
+        from pynput.keyboard import Controller
+        return Controller()
+
+
+class _LazyKey:
+    def __getattr__(self, name: str):
+        from pynput.keyboard import Key as RealKey
+        return getattr(RealKey, name)
+
+
+KeyboardController = _LazyKeyboardController
+Key = _LazyKey()
 
 from ...utils.logger import get_logger
 
@@ -50,7 +64,9 @@ class TextOutputController:
     PRE_PASTE_SETTLE_S: float = 0.03
 
     def __init__(self):
-        self._keyboard = KeyboardController()
+        # Delay pynput until output is actually requested. This lets the Linux
+        # desktop UI launch on systems where X/Wayland input hooks are unavailable.
+        self._keyboard = None
 
     def output_text(self, text: str) -> InsertionResult:
         """Insert ``text`` at the active cursor via clipboard + Ctrl+V.
@@ -86,6 +102,8 @@ class TextOutputController:
             # delayed the return and nothing depends on it.
             if self.PRE_PASTE_SETTLE_S > 0:
                 time.sleep(self.PRE_PASTE_SETTLE_S)
+            if self._keyboard is None:
+                self._keyboard = KeyboardController()
             with self._keyboard.pressed(Key.ctrl):
                 self._keyboard.tap("v")
         except Exception as e:
