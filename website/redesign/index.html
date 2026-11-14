@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SayIt | Local push-to-talk dictation</title>
+<meta name="description" content="Hold a hotkey, speak, and release. SayIt puts the words at your cursor with on-device recognition.">
+<link rel="canonical" href="https://sayit.ineffablebeast.in/">
+<link rel="icon" href="./mark.svg" type="image/svg+xml">
+<meta name="theme-color" content="#25261e">
+<meta property="og:type" content="website"><meta property="og:title" content="SayIt | Local push-to-talk dictation"><meta property="og:description" content="Hold a hotkey. Speak. Release to type."><meta property="og:url" content="https://sayit.ineffablebeast.in/"><meta property="og:image" content="https://sayit.ineffablebeast.in/horizon.webp"><meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"SayIt","url":"https://sayit.ineffablebeast.in/","operatingSystem":"Windows, Linux","applicationCategory":"UtilitiesApplication","downloadUrl":"https://sayit.ineffablebeast.in/download/"}</script>
+<link rel="preload" href="./fonts/editorial.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="./styles.css"><link rel="stylesheet" href="./signal-edition.css">
+<script type="module" src="./app.js"></script>
+</head>
+<body class="signal-edition">
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-nav">
+  <nav class="nav-inner wrap" aria-label="Primary">
+    <a class="brand" href="#home"><img src="./mark.svg" alt="" width="23" height="23">SayIt</a>
+    <button class="menu-trigger edition-menu" type="button" aria-expanded="false" aria-controls="nav-links">Menu</button>
+    <div id="nav-links" class="nav-links">
+      <a href="#demo">Demo</a><a href="#workflow">Workflow</a><a href="#features">Features</a><a href="#privacy">Privacy</a><a href="#platforms">Platforms</a><a href="#faq">FAQ</a>
+    </div>
+    <a class="line-link nav-download" href="./download/">Download <span aria-hidden="true">↗</span></a>
+  </nav>
+</header>
+<div class="edition-intro" aria-hidden="true"><div class="edition-pulse"></div><strong>SayIt</strong></div>
+<main id="main" tabindex="-1">
+  <div class="film" id="opening"><section id="home" class="hero" aria-labelledby="hero-title">
+    <picture class="hero-image" aria-hidden="true">
+      <source media="(max-width: 620px)" srcset="./horizon-mobile.webp">
+      <img src="./horizon.webp" alt="" width="1600" height="900" fetchpriority="high">
+    </picture>
+    <canvas class="film-signal" width="960" height="260" aria-hidden="true"></canvas>
+    <div class="hero-inner wrap">
+      <div class="hero-title">
+        <p class="overline">Local voice typing for Windows &amp; Linux</p>
+        <h1 id="hero-title">SayIt</h1>
+      </div>
+      <div class="hero-bottom"><p class="edition-platforms"><span>Windows</span><span>Linux</span></p>
+        <div class="hero-glass">
+          <p class="edition-pitch">Speak it.<br>See it typed.</p><p>Push-to-talk dictation that runs on your device.</p>
+          <div class="actions"><a class="pill" href="./download/">Download SayIt <span aria-hidden="true">↗</span></a><a href="#demo" class="line-link edition-round">Try the demo <span aria-hidden="true">↘</span></a></div>
+        </div>
+        <div class="hero-sample" aria-hidden="true"><div class="sample-orbit"></div>
+          <div class="signal"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+          <p>Open the <mark>GitHub</mark> Actions log.<i></i></p>
+          <span class="overline">Example transcript</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  </div>
+  <section class="film-prologue" data-signal-scene="prologue" aria-labelledby="prologue-title">
+    <div class="wrap">
+      <p class="overline">Push-to-talk dictation</p>
+      <h2 id="prologue-title"><span>Hold to speak.</span><br><em>Release to write.</em></h2>
+      <p>One shortcut puts your words where you were already typing.</p>
+      <a class="line-link" href="#demo">Try it on the page ↓</a>
+    </div>
+  </section>
+
+  <section id="demo" class="section demo-chapter" aria-labelledby="demo-title">
+    <div class="wrap demo-layout">
+    <div class="section-copy" data-reveal><p class="overline">Try SayIt</p><h2 id="demo-title">From voice<br>to cursor.</h2><p>Choose a profile to see how SayIt formats the same kind of input for an editor, email, or chat.</p><p class="fine" id="demo-note">Scripted examples. This page uses no microphone.</p><canvas class="signal-field" width="520" height="160" aria-hidden="true"></canvas></div>
+    <div class="demo" aria-describedby="demo-note">
+      <div class="demo-top"><span id="active-app">Code editor</span><span class="overline">Demo</span></div>
+      <fieldset class="profiles"><legend>Formatting profile</legend><label><input type="radio" name="profile" value="developer" checked><span>Developer</span></label><label><input type="radio" name="profile" value="email"><span>Email</span></label><label><input type="radio" name="profile" value="chat"><span>Chat</span></label></fieldset>
+      <div class="example"><p class="overline">Spoken</p><p id="spoken">open the git hub actions log and run get user by id camel case</p></div>
+      <div class="example output"><p class="overline">Inserted text</p><p id="transcript">Your transcript appears here.</p></div>
+      <div class="controls">
+        <button type="button" id="record" class="record-key" aria-describedby="demo-help">Hold <kbd>Space</kbd></button>
+
+        <div class="signal demo-wave" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+      </div>
+      <p id="state" role="status">Ready</p>
+      <p class="fine" id="demo-help">Hold the keycap or focus it and hold Space. Press Enter to play the full example. Escape cancels.</p>
+    </div>
+    </div>
+  </section>
+
+  <div class="app-row"><div class="app-track"><ul class="wrap" aria-label="Where SayIt works"><li>Code editors</li><li>Terminals</li><li>Email</li><li>Chat</li><li>Issue trackers</li><li>Notes</li><li>Docs</li><li>CRMs</li><li>Search boxes</li><li>Forms</li></ul></div></div>
+
+  <section id="workflow" class="workflow section" aria-labelledby="workflow-title">
+    <div class="wrap workflow-grid">
+      <div class="workflow-sticky">
+        <p class="overline">How it works</p><h2 id="workflow-title">One utterance.<br>Four steps.</h2>
+        <div class="workflow-visual" aria-hidden="true" data-step="0">
+          <p class="overline">Dictation preview <span id="step-number">01 / 04</span></p>
+          <div class="workflow-frames">
+            <div class="workflow-frame"><kbd>Hotkey</kbd><span>Hold to record</span></div>
+            <div class="workflow-frame"><div class="signal"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div><span>Speak naturally</span></div>
+            <div class="workflow-frame"><span class="scan-line"></span><span>Transcribing on-device</span></div>
+            <div class="workflow-frame"><code>Open the <mark>GitHub</mark> Actions log.</code><span>Text at your cursor</span></div>
+          </div>
+          <div class="progress"><span></span></div>
+        </div>
+      </div>
+      <ol class="steps">
+        <li><h3>Hold the hotkey</h3><p>Use the configurable shortcut to start recording.</p></li>
+        <li><h3>Speak naturally</h3><p>Dictate prose, identifiers, URLs, or a spoken edit such as “scratch that”.</p></li>
+        <li><h3>Release to transcribe</h3><p>Sherpa-ONNX recognizes speech on your device. Enabled local rules format the transcript.</p></li>
+        <li><h3>See it at your cursor</h3><p>Text goes into the active app. Escape cancels recording or transcription. If insertion fails, the transcript stays recoverable.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section wrap timing" aria-labelledby="timing-title">
+    <div class="section-copy" data-reveal><p class="overline">Why dictate?</p><h2 id="timing-title">Say the whole sentence.</h2><p>Use a single utterance when the words are ready and your hands are somewhere else.</p></div>
+    <figure data-timing><blockquote>“Ship the release notes before Friday.”</blockquote>
+      <div class="timing-row"><span>Typed</span><i aria-hidden="true"></i></div>
+      <div class="timing-row"><span>Spoken</span><i aria-hidden="true"></i></div>
+      <figcaption>Illustrative timing comparison. Transcription time varies with hardware, utterance length, and model choice.</figcaption>
+    </figure>
+  </section>
+  <section id="features" class="section wrap features" aria-labelledby="feature-title">
+    <div class="section-copy" data-reveal><p class="overline">Profiles &amp; rules</p><h2 id="feature-title">Your words.<br>Your rules.</h2><p>SayIt picks a profile from the active app’s metadata. Your manual selection takes priority.</p></div>
+    <div class="profile-gallery"><div class="profile-grid" id="formatting-gallery">
+      <article data-reveal><p class="overline">Code editor</p><h3>Developer</h3><p>Format technical terms and identifiers.</p><code>get user by id → getUserById</code><a class="profile-link" href="#demo" data-example="developer">Try Developer <span aria-hidden="true">↗</span></a></article>
+      <article data-reveal><p class="overline">Email client</p><h3>Email</h3><p>Structure a message as you speak.</p><code>new paragraph → line break</code><a class="profile-link" href="#demo" data-example="email">Try Email <span aria-hidden="true">↗</span></a></article>
+      <article data-reveal><p class="overline">Chat app</p><h3>Chat</h3><p>Drop a false start mid-utterance.</p><code>scratch that → start over</code><a class="profile-link" href="#demo" data-example="chat">Try Chat <span aria-hidden="true">↗</span></a></article>
+    </div>
+    <button type="button" class="line-link gallery-detail" hidden>View profile example ↗</button><div class="gallery-nav" hidden>
+      <button type="button" data-gallery="-1" aria-controls="formatting-gallery" aria-label="Previous profile">←</button>
+      <span class="overline" role="status"></span>
+      <button type="button" data-gallery="1" aria-controls="formatting-gallery" aria-label="Next profile">→</button>
+    </div>
+    </div>
+    <dl class="feature-ledger">
+      <div><dt>Personal vocabulary</dt><dd>Set your preferred spellings and turn individual entries off. Multi-word entries match longest first, regardless of case.</dd></div>
+      <div><dt>Snippets &amp; voice edits</dt><dd>Insert saved text, replace a phrase, or delete the last sentence. Snippets insert literal text. They never execute commands.</dd></div>
+      <div><dt>Developer mode</dt><dd>Request camel, snake, kebab or Pascal case, or wrap an excerpt in a code block.</dd></div>
+      <div><dt>Saved corrections</dt><dd>Choose which fixes become rules. The same input, context and settings produce the same output.</dd></div>
+    </dl>
+    <a class="line-link" href="./features/">See all features ↗</a>
+  </section>
+
+  <section id="privacy" data-signal-scene="privacy" class="section privacy" aria-labelledby="privacy-title">
+    <div class="wrap privacy-grid">
+      <div class="section-copy" data-reveal><p class="overline">Privacy</p><h2 id="privacy-title">Your audio stays<br>on your device.</h2><a class="line-link" href="./privacy/">Read the privacy notes ↗</a></div>
+      <div class="privacy-list">
+        <div><h3>Local by default</h3><p>Core dictation needs no account or API key. Context detection reads application metadata only. SayIt does not take screenshots, scrape clipboard contents, or log keystrokes.</p></div>
+        <div><h3>Safe zones</h3><p>Block recording before audio is captured in apps you protect.</p></div>
+        <div><h3>Optional text enhancement</h3><p>Off by default. If you enable a remote provider, it can receive transcript text for enhancement. Microphone audio is handled on-device.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="platforms" class="section wrap platforms" aria-labelledby="platform-title">
+    <div class="section-copy" data-reveal><p class="overline">Compatibility</p><h2 id="platform-title">Where it runs.</h2><a class="line-link" href="./install/">Installation guide ↗</a></div>
+    <dl class="platform-list">
+      <div><dt>Windows <span>Primary</span></dt><dd>Windows is the primary target. Automated tests run on Windows. Packaged-install validation is in progress.</dd></div>
+      <div><dt>Linux <span>Partial</span></dt><dd>The AppImage includes PortAudio and passes a packaged launch smoke test. Hotkeys may need X11 and insertion may require <code>xclip</code>.</dd></div>
+      <div><dt>macOS <span>Unavailable</span></dt><dd>There is no public installer.</dd></div>
+    </dl>
+  </section>
+
+  <section id="faq" class="section wrap faq-layout" aria-labelledby="faq-title">
+    <div class="section-copy" data-reveal><p class="overline">FAQ</p><h2 id="faq-title">Good questions.</h2></div>
+    <div class="faq">
+      <details><summary>Is it streaming dictation?</summary><p>SayIt transcribes once, after you release the hotkey.</p></details>
+      <details><summary>Does my audio leave my computer?</summary><p>Core dictation runs on-device. An optional remote enhancement provider can receive transcript text if you enable it.</p></details>
+      <details><summary>Does AI rewrite my words?</summary><p>Core corrections are deterministic, local rules you can turn off. Optional language-model enhancement is separate and off by default.</p></details>
+      <details><summary>How large are the speech models?</summary><p>Roughly 100 MB to 1 GB, depending on the model you choose.</p></details>
+      <details><summary>Where do downloads come from?</summary><p>GitHub Releases provides the artifacts and published checksums. The download center reflects the latest published release.</p></details>
+      <details><summary>Can I see the source?</summary><p>Yes. SayIt is developed in the open under the MIT License. <a href="https://github.com/VptrCipher/SayIt">View the repository ↗</a></p></details>
+    </div>
+  </section>
+
+  <section class="closing" data-signal-scene="closing" aria-labelledby="closing-title">
+    <div class="wrap">
+      <p class="overline">SayIt</p><h2 id="closing-title">Say the thing.</h2>
+      <div class="actions"><a class="line-link" href="./download/">Download SayIt ↗</a><a class="line-link" href="./install/">Installation guide ↗</a></div>
+    </div>
+  </section>
+<dialog class="edition-dialog" aria-labelledby="example-title">
+  <form method="dialog"><button class="line-link" aria-label="Close example">Close ×</button></form>
+  <h2 id="example-title"></h2>
+  <p class="overline">Spoken</p><p data-spoken></p>
+  <p class="overline">Inserted text</p><p data-inserted></p>
+  <a class="line-link" href="#demo" data-dialog-example>Play it in the demo ↓</a>
+</dialog>
+</main>
+<footer class="footer"><div class="wrap"><a class="brand" href="#home">SayIt</a><p>From the Ineffable Beast project.</p><nav aria-label="Secondary"><a href="https://github.com/VptrCipher/SayIt/releases">Releases</a><a href="https://github.com/VptrCipher/SayIt/issues">Issues</a><a href="https://github.com/VptrCipher/SayIt">GitHub ↗</a></nav></div></footer>
+</body>
+</html>

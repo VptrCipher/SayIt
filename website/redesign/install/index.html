@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Installation | SayIt</title><meta name="description" content="Install the app, choose a speech model, and try your first sentence.">
+<link rel="canonical" href="https://sayit.ineffablebeast.in/install/">
+<link rel="icon" href="../mark.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="../signal-edition.css"><script type="module" src="../pages.js"></script></head>
+<body class="detail-page signal-edition" data-route="install">
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-nav"><nav class="nav-inner wrap" aria-label="Primary">
+<a class="brand" href="../"><img src="../mark.svg" alt="" width="23" height="23">SayIt</a>
+<div class="detail-links"><a href="../download/">Download</a><a href="../install/" aria-current="page">Installation</a><a href="../features/">Features</a><a href="../privacy/">Privacy</a></div>
+</nav></header>
+<main id="main" tabindex="-1">
+<section class="detail-hero" aria-labelledby="page-title"><div class="detail-scene" aria-hidden="true"></div><div class="detail-orbit" aria-hidden="true"><i></i><i></i><i></i></div><div class="wrap detail-heading"><p class="overline">Installation</p><h1 id="page-title">Your first dictation.</h1><p>Install the app, choose a speech model, and try your first sentence.</p></div></section>
+<div class="wrap detail-content"><nav class="detail-index" aria-label="Installation sections"><a href="#windows">Windows</a><a href="#linux">Linux</a><a href="#source">Source</a><a href="#first-run">First run</a><a href="#troubleshooting">Troubleshooting</a></nav>
+<section id="windows"><p class="overline">01 / Windows</p><h2>Run the installer.</h2><p>You’ll need 64-bit Windows 10 or later, a microphone, and network access for the initial model download.</p>
+<ol><li>Download the Windows installer and verify its SHA-256 checksum against the official release.</li><li>Run the installer. It installs for your user under <code>%LOCALAPPDATA%\Programs\SayIt</code>. The desktop shortcut and launch-at-login options are off by default.</li><li>Launch SayIt from the final screen or the Start Menu. Look for the tray icon and setup wizard.</li></ol><a class="line-link" href="../download/">Find the Windows installer →</a></section>
+<section id="linux"><p class="overline">02 / Linux</p><h2>Open the AppImage.</h2><p>Use a 64-bit distribution with glibc 2.28 or newer. Install <code>xclip</code> for text insertion. Global hotkeys may require an X11 session.</p><pre tabindex="0" aria-label="AppImage commands"><code>chmod +x SayIt-*.AppImage
+./SayIt-*.AppImage</code></pre><p>The setup wizard opens from the tray on first launch. Keep the AppImage wherever you want to run it from.</p><a class="line-link" href="../download/">Find the Linux AppImage →</a></section>
+<section id="source"><p class="overline">03 / Source</p><h2>Run from source.</h2><p>For development or contribution, install Python 3.12 or newer, Git, and uv.</p><pre tabindex="0" aria-label="Source installation commands"><code>git clone https://github.com/VptrCipher/SayIt.git
+cd SayIt
+uv sync
+uv run python -m sayit</code></pre><a class="line-link" href="https://github.com/VptrCipher/SayIt">See the source and test instructions ↗</a></section>
+<section id="first-run"><h2>Set up your first dictation.</h2><ol><li>Select your microphone and run the built-in input test.</li><li>Download a speech model. You can finish setup without one and install it when you’re ready to dictate.</li><li>Pick a hotkey. The default is <kbd>Ctrl</kbd> + <kbd>Space</kbd>.</li><li>Focus an editable field. Hold the hotkey, speak, and release. Press Esc to cancel.</li></ol></section>
+<section id="troubleshooting"><h2>Troubleshooting.</h2>
+<details><summary>Windows shows a SmartScreen warning</summary><p>The installer is unsigned. Verify the file against the official GitHub release and its checksum before deciding whether to run it.</p></details>
+<details><summary>The microphone or model is unavailable</summary><p>Check microphone permissions and input selection. If a model download fails, check network access and try again in the setup wizard or Settings.</p></details>
+<details><summary>The shortcut or insertion fails</summary><p>Try a different shortcut, check that an editable field has focus, and check X11 and xclip on Linux. After a failed insertion, the last transcript is recoverable.</p></details>
+<details><summary>How do I uninstall?</summary><p>Use Installed apps on Windows or remove the AppImage on Linux. Use Clear Data in SayIt if you also want to remove settings, history, logs, and downloaded models.</p></details></section>
+
+</div>
+</main>
+<footer class="footer"><div class="wrap"><a class="brand" href="../">SayIt</a>
+<nav aria-label="Secondary"><a href="https://github.com/VptrCipher/SayIt">GitHub ↗</a><a href="https://github.com/VptrCipher/SayIt/releases">Releases ↗</a></nav></div></footer>
+</body></html>
